@@ -5,11 +5,14 @@
  */
 package org.centrale.tp2_medev_computer_vision;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.util.StringTokenizer;
+import java.nio.file.Path; 
+import java.nio.file.Paths; 
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  *
@@ -18,9 +21,9 @@ import java.util.StringTokenizer;
 public class ImagePGM {
 
     /**
-     * The absolute path to the image.
+     * The absolute path to the image as a Path object for convenience.
      */
-    private String path;
+    private Path path;
 
     /**
      * The matrix containing the grey value of each pixel in the image.
@@ -43,10 +46,15 @@ public class ImagePGM {
     private int width;
 
     public ImagePGM(String path) {
-        this.path = path;
+        this.path = Paths.get(path);
         this.loadFromFile();
     }
 
+    /**
+     * Creates an ImagePGM object from a matrix of gray pixels. Assumes that the
+     * maximum value of a pixel is 255 and sets path to a null object.
+     * @param mat A matrix containing the gray value of the pixels in the image.
+     */
     public ImagePGM(int[][] mat) {
         this.mat = mat;
         this.height = mat.length;
@@ -55,16 +63,45 @@ public class ImagePGM {
 
     public ImagePGM(ImagePGM img) {
         this.path = img.getPath();
-        this.mat = img.getMat();
+        this.mat = img.getMat().clone();
+        this.height = img.getHeight();
+        this.width = img.getWidth();
+        this.maxGrayValue = img.getMaxGrayValue();
     }
 
-    public String getPath() {
+    public Path getPath() {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(Path path) {
         this.path = path;
     }
+
+    public int getMaxGrayValue() {
+        return maxGrayValue;
+    }
+
+    public void setMaxGrayValue(int maxGrayValue) {
+        this.maxGrayValue = maxGrayValue;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    
 
     public int[][] getMat() {
         return mat;
@@ -85,7 +122,7 @@ public class ImagePGM {
         try {
             // Open file and skip the first two lines. 
             // TODO : Throw an Exception if the first line is not P2
-            file = new BufferedReader(new FileReader(this.path));
+            file = new BufferedReader(new FileReader(this.path.toString()));
             file.readLine();
             file.readLine();
 
