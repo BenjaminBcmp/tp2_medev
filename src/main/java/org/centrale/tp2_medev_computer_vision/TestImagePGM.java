@@ -13,5 +13,7 @@ public class TestImagePGM {
     
     public static void main(String[] args){
         String path = "/Users/Benjamin/Downloads/lena.pgm";
+        ImagePGM img = new ImagePGM(path);
+        img.affiche();
     }
 }
