@@ -18,6 +18,16 @@ public class ImagePGM {
         this.path = path;
     }
 
+    public ImagePGM(int[][] mat) {
+        this.mat = mat;
+    }
+
+    public ImagePGM(ImagePGM img) {
+        this.path = img.getPath();
+        this.mat = img.getMat();
+    }
+
+    
     public String getPath() {
         return path;
     }
