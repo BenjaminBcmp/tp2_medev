@@ -6,10 +6,12 @@
 package org.centrale.tp2_medev_computer_vision;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.util.StringTokenizer;
-import java.nio.file.Path; 
-import java.nio.file.Paths; 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,6 +55,7 @@ public class ImagePGM {
     /**
      * Creates an ImagePGM object from a matrix of gray pixels. Assumes that the
      * maximum value of a pixel is 255 and sets path to a null object.
+     *
      * @param mat A matrix containing the gray value of the pixels in the image.
      */
     public ImagePGM(int[][] mat) {
@@ -101,8 +104,6 @@ public class ImagePGM {
         this.width = width;
     }
 
-    
-
     public int[][] getMat() {
         return mat;
     }
@@ -118,7 +119,6 @@ public class ImagePGM {
         BufferedReader file;
         String line;
         StringTokenizer tokenizer;
-        
         try {
             // Open file and skip the first two lines. 
             // TODO : Throw an Exception if the first line is not P2
@@ -131,7 +131,7 @@ public class ImagePGM {
             tokenizer = new StringTokenizer(line, " ");
             this.width = Integer.parseInt(tokenizer.nextToken());
             this.height = Integer.parseInt(tokenizer.nextToken());
-            
+
             // Read max gray value
             line = file.readLine();
             this.maxGrayValue = Integer.parseInt(line);
@@ -152,14 +152,62 @@ public class ImagePGM {
             e.printStackTrace();
         } catch (IOException er) {
             er.printStackTrace();
-        } 
+        }
     }
-    
+
     public void affiche() {
         System.out.println("Image at path: " + this.path);
         System.out.println("Width: " + this.width);
         System.out.println("Height: " + this.height);
         System.out.println("Max gray value: " + this.maxGrayValue);
+    }
+
+    /**
+     * Writes the image to a file.
+     *
+     * @param path The path to where the image should be stored
+     */
+    public void writeToFile(String path) {
+        BufferedWriter file = null;
+        String line;
+        try {
+            // Open the file
+            file = new BufferedWriter(new FileWriter(path));
+
+            // Write the header of the file
+            file.write("P2");
+            file.newLine();
+            file.write("#");
+            file.newLine();
+
+            // Write height, width and max gray value
+            file.write(Integer.toString(this.width) + " " + Integer.toString(this.height));
+            file.newLine();
+            file.write(Integer.toString(this.maxGrayValue));
+            file.newLine();
+            
+            // Write pixels
+            for (int i=0;i<this.height;i++){
+                for(int j=0;j<this.width;j++){
+                    file.write(Integer.toString(this.mat[i][j]));
+                    if (j < this.width - 1){ // Do not write \t for the last pixel
+                        file.write("\t");
+                    }
+                }
+                file.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (file != null) {
+                    file.flush();
+                    file.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

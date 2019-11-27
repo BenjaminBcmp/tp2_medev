@@ -12,16 +12,31 @@ package org.centrale.tp2_medev_computer_vision;
 public class TestImagePGM {
     
     public static void main(String[] args){
-        testLoadFromFile();
+        testWriteToFile();
     }
     
     public static void testLoadFromFile() {
-        System.out.println("Test of loadFromFile");
         String path = "/Users/Benjamin/Downloads/lena.pgm";
+
+        System.out.println("Test of loadFromFile");
         System.out.println("Loading image from " + path);
         System.out.println("Image loaded :");
         ImagePGM img = new ImagePGM(path);
         img.affiche();
+        System.out.println("Done!");
+    }
+    
+    public static void testWriteToFile() {
+        String path = "/Users/Benjamin/Downloads/lena.pgm";
+        String pathCopy = "/Users/Benjamin/Downloads/lena_copy.pgm";
+        
+        System.out.println("Test of writeToFile");
+        System.out.println("Loading image from " + path);
+        System.out.println("Image loaded :");
+        ImagePGM img = new ImagePGM(path);
+        img.affiche();
+        System.out.println("Writing image to " + pathCopy);
+        img.writeToFile(pathCopy);
         System.out.println("Done!");
     }
 }
