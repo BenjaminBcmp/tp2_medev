@@ -12,7 +12,7 @@ package org.centrale.tp2_medev_computer_vision;
 public class TestImagePGM {
     
     public static void main(String[] args){
-        String path = "/Users/Benjamin/Downloads/lena.pgm";
+        String path = "data/lena.pgm";
         testWriteToFile(path);
     }
     
