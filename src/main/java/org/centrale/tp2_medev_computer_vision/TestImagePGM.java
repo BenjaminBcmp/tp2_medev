@@ -15,7 +15,6 @@ public class TestImagePGM {
         String path = "data/lena.pgm";
         String pathWrite = "data/copy_lena.pgm";
         String pathSeuillage = "data/seuillage_lena.pgm";
-        testWriteToFile(path);
         testSeuillage(path);
     }
 
@@ -79,7 +78,7 @@ public class TestImagePGM {
         String pathCopy = img.getPath().getParent().toString() + "/seuillage_"
                 + img.getPath().getFileName().toString();
         System.out.println("Writing image to " + pathCopy);
-        img.seuillage(pathCopy);
+        img.seuillage(150).writeToFile(pathCopy);
         System.out.println("Done!");
     }
 }
