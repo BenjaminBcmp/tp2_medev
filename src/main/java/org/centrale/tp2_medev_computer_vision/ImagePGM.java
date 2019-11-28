@@ -169,7 +169,6 @@ public class ImagePGM {
      */
     public void writeToFile(String path) {
         BufferedWriter file = null;
-        String line;
         try {
             // Open the file
             file = new BufferedWriter(new FileWriter(path));
@@ -185,12 +184,12 @@ public class ImagePGM {
             file.newLine();
             file.write(Integer.toString(this.maxGrayValue));
             file.newLine();
-            
+
             // Write pixels
-            for (int i=0;i<this.height;i++){
-                for(int j=0;j<this.width;j++){
+            for (int i = 0; i < this.height; i++) {
+                for (int j = 0; j < this.width; j++) {
                     file.write(Integer.toString(this.mat[i][j]));
-                    if (j < this.width - 1){ // Do not write \t for the last pixel
+                    if (j < this.width - 1) { // Do not write \t for the last pixel
                         file.write("\t");
                     }
                 }
@@ -210,4 +209,49 @@ public class ImagePGM {
         }
     }
 
+    public void seuillage(String path) {
+        BufferedWriter file = null;
+        try {
+            // Open the file
+            file = new BufferedWriter(new FileWriter(path));
+
+            // Write the header of the file
+            file.write("P2");
+            file.newLine();
+            file.write("#");
+            file.newLine();
+
+            // Write height, width and max gray value
+            file.write(Integer.toString(this.width) + " " + Integer.toString(this.height));
+            file.newLine();
+            file.write(Integer.toString(this.maxGrayValue));
+            file.newLine();
+
+            // Write pixels
+            for (int i = 0; i < this.height; i++) {
+                for (int j = 0; j < this.width; j++) {
+                    if(this.mat[i][j] < 70 ){
+                        file.write(Integer.toString(0));
+                    }else{
+                        file.write(Integer.toString(maxGrayValue));
+                    }
+                    if (j < this.width - 1) { // Do not write \t for the last pixel
+                        file.write("\t");
+                    }
+                }
+                file.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (file != null) {
+                    file.flush();
+                    file.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
