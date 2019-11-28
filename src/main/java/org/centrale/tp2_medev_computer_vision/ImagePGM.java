@@ -113,7 +113,8 @@ public class ImagePGM {
     }
 
     /**
-     * Initializes the attributes of the object by reading the file at path.
+     * Initializes the attributes of the object by reading the file at
+     * path.(original image)
      */
     private void loadFromFile() {
         BufferedReader file;
@@ -125,7 +126,6 @@ public class ImagePGM {
             file = new BufferedReader(new FileReader(this.path.toString()));
             file.readLine();
             file.readLine();
-
             // Read height and width
             line = file.readLine();
             tokenizer = new StringTokenizer(line, " ");
@@ -209,6 +209,11 @@ public class ImagePGM {
         }
     }
 
+    /**
+     * Thresholding of the image then write to a file.
+     *
+     * @param path The path to where the image should be stored
+     */
     public void seuillage(String path) {
         BufferedWriter file = null;
         try {
@@ -230,9 +235,9 @@ public class ImagePGM {
             // Write pixels
             for (int i = 0; i < this.height; i++) {
                 for (int j = 0; j < this.width; j++) {
-                    if(this.mat[i][j] < 70 ){
+                    if (this.mat[i][j] < 70) {
                         file.write(Integer.toString(0));
-                    }else{
+                    } else {
                         file.write(Integer.toString(maxGrayValue));
                     }
                     if (j < this.width - 1) { // Do not write \t for the last pixel
@@ -254,4 +259,25 @@ public class ImagePGM {
             }
         }
     }
+
+    /**
+     * Present the differences between two images. equal = 0 not equal = 255
+     *
+     * @param path The path to where the image should be stored
+     */
+    public ImagePGM difference(ImagePGM image) {
+        int[][] diffImage = new int[this.height][this.width];
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                if (this.mat[i][j] == image.getMat()[i][j]) {
+                    diffImage[i][j] = 0;
+                } else {
+                    diffImage[i][j] = 255;
+                }
+            }
+
+        }
+        return new ImagePGM(diffImage);
+    }
+
 }
