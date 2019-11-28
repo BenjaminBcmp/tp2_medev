@@ -43,6 +43,34 @@ public class TestImagePGM {
         System.out.println("Done!");
     }
     
+    public static void testHistogram(String path){
+        System.out.println("Test of histogram");
+        System.out.println("Loading image from " + path);
+        ImagePGM img = new ImagePGM(path);
+        img.affiche();
+        
+        HistogramPGM hist = new HistogramPGM(img);
+        System.out.println("Histogram :");
+        int[] histArray = hist.getHist();
+        for (int i = 0; i < histArray.length; i++) {
+            System.out.print(histArray[i] + " ");
+        }
+        System.out.println();
+        
+        System.out.println("Histogram rescaled:");
+        int[] histArrayRescaled = hist.rescaleHistogram();
+        for (int i = 0; i < histArrayRescaled.length; i++) {
+            System.out.print(histArrayRescaled[i] + " ");
+        }
+        System.out.println();
+        
+        String pathHisto = img.getPath().getParent().toString() + "/histogram_" +
+                img.getPath().getFileName().toString();
+        System.out.println("Saving histogram to : " + pathHisto);
+        hist.saveHistogram(pathHisto);
+    }
+
+
     public static void testSeuillage(String path) {
         System.out.println("Test of seuillage");
         System.out.println("Loading image from " + path);
@@ -56,6 +84,7 @@ public class TestImagePGM {
         img.seuillage(pathCopy);
         System.out.println("Done!");
     }
+
     
     public static void testDifference(String path, String pathSeuillage) {
         System.out.println("Test of difference");
@@ -74,4 +103,5 @@ public class TestImagePGM {
         System.out.println("Done!");
     }
     
+
 }
