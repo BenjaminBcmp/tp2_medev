@@ -169,7 +169,6 @@ public class ImagePGM {
      */
     public void writeToFile(String path) {
         BufferedWriter file = null;
-        String line;
         try {
             // Open the file
             file = new BufferedWriter(new FileWriter(path));
