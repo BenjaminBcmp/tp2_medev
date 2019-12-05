@@ -212,7 +212,8 @@ public class ImagePGM {
     /**
      * Thresholding of the image then write to a file.
      *
-     * @param path The path to where the image should be stored
+     * @param seuil
+     * @return
      */
     public ImagePGM seuillage(int seuil) {
         int[][] newImg = new int[this.height][this.width];
@@ -228,10 +229,11 @@ public class ImagePGM {
         return new ImagePGM(newImg);
     }
 
- /**
-     * Present the differences between two images. equal = 0 not equal = 255
+    /**
+     * Present the differences between two images.equal = 0 not equal = 255
      *
-     * @param path The path to where the image should be stored
+     * @param image
+     * @return
      */
     public ImagePGM difference(ImagePGM image) {
         int[][] diffImage = new int[this.height][this.width];
@@ -248,4 +250,21 @@ public class ImagePGM {
         return new ImagePGM(diffImage);
     }
 
+    public ImagePGM rescale(float factor) throws IllegalArgumentException {
+        if (factor > 0) {
+            int newWidth = (int) Math.floor(factor * this.width);
+            int newHeight = (int) Math.floor(factor * this.height);
+            int[][] newMat = new int[newHeight][newWidth];
+            for (int i = 0; i < newHeight; i++) {
+                for (int j = 0; j < newWidth; j++) {
+                    newMat[i][j] = this.mat[(int) Math.floor(i/factor)][(int) Math.floor(j/factor)];
+                }
+            }
+            
+            return new ImagePGM(newMat);
+        } else {
+            throw new IllegalArgumentException("zero or negative parameter (" + factor + ')');
+        }
+
+    }
 }

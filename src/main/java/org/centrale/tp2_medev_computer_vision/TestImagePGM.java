@@ -10,15 +10,45 @@ package org.centrale.tp2_medev_computer_vision;
  * @author Benjamin
  */
 public class TestImagePGM {
-    
+
     public static void main(String[] args) {
         String path = "data/lena.pgm";
-        String pathSeuillage = "data/seuillage_lena.pgm";
-        testSeuillage(path);
-        testDifference(path,pathSeuillage);
+        // String pathSeuillage = "data/seuillage_lena.pgm";
+        testRescale(path);
+        // testDifference(path, pathSeuillage);
+
+    }
+
+    public static void testRescale(String path) {
+        System.out.println("Test of rescale");
+        System.out.println("Loading image from " + path);
+        System.out.println("Image loaded :");
+        ImagePGM img = new ImagePGM(path);
+        String pathRescaledImg;
+        
+        // Factor 2.5
+        System.out.println("Rescaling by a factor of 2.5 :");
+        pathRescaledImg = img.getPath().getParent().toString() + "/rescaled_2_5"
+                + img.getPath().getFileName().toString();
+        try {
+            img.rescale(2.5f).writeToFile(pathRescaledImg);
+        } catch (IllegalArgumentException e) {
+        }
+        
+        System.out.println("");
+        
+        // Factor 0.7
+        System.out.println("Rescaling by a factor of 0.7 :");
+        pathRescaledImg = img.getPath().getParent().toString() + "/rescaled_0_7"
+                + img.getPath().getFileName().toString();
+        try {
+            img.rescale(0.7f).writeToFile(pathRescaledImg);
+        } catch (IllegalArgumentException e) {
+        }
+        
         
     }
-    
+
     public static void testLoadFromFile(String path) {
         System.out.println("Test of loadFromFile");
         System.out.println("Loading image from " + path);
@@ -27,27 +57,27 @@ public class TestImagePGM {
         img.affiche();
         System.out.println("Done!");
     }
-    
+
     public static void testWriteToFile(String path) {
         System.out.println("Test of writeToFile");
         System.out.println("Loading image from " + path);
         System.out.println("Image loaded :");
         ImagePGM img = new ImagePGM(path);
         img.affiche();
-        
+
         String pathCopy = img.getPath().getParent().toString() + "/copy_"
                 + img.getPath().getFileName().toString();
         System.out.println("Writing image to " + pathCopy);
         img.writeToFile(pathCopy);
         System.out.println("Done!");
     }
-    
-    public static void testHistogram(String path){
+
+    public static void testHistogram(String path) {
         System.out.println("Test of histogram");
         System.out.println("Loading image from " + path);
         ImagePGM img = new ImagePGM(path);
         img.affiche();
-        
+
         HistogramPGM hist = new HistogramPGM(img);
         System.out.println("Histogram :");
         int[] histArray = hist.getHist();
@@ -55,20 +85,19 @@ public class TestImagePGM {
             System.out.print(histArray[i] + " ");
         }
         System.out.println();
-        
+
         System.out.println("Histogram rescaled:");
         int[] histArrayRescaled = hist.rescaleHistogram();
         for (int i = 0; i < histArrayRescaled.length; i++) {
             System.out.print(histArrayRescaled[i] + " ");
         }
         System.out.println();
-        
-        String pathHisto = img.getPath().getParent().toString() + "/histogram_" +
-                img.getPath().getFileName().toString();
+
+        String pathHisto = img.getPath().getParent().toString() + "/histogram_"
+                + img.getPath().getFileName().toString();
         System.out.println("Saving histogram to : " + pathHisto);
         hist.saveHistogram(pathHisto);
     }
-
 
     public static void testSeuillage(String path) {
         System.out.println("Test of seuillage");
@@ -76,7 +105,7 @@ public class TestImagePGM {
         System.out.println("Image loaded :");
         ImagePGM img = new ImagePGM(path);
         img.affiche();
-        
+
         String pathCopy = img.getPath().getParent().toString() + "/seuillage_"
                 + img.getPath().getFileName().toString();
         System.out.println("Writing image to " + pathCopy);
@@ -84,23 +113,21 @@ public class TestImagePGM {
         System.out.println("Done!");
     }
 
-    
     public static void testDifference(String path, String pathSeuillage) {
         System.out.println("Test of difference");
         ImagePGM imgOriginal = new ImagePGM(path);
         ImagePGM imgthreshold = new ImagePGM(pathSeuillage);
-        
+
         ImagePGM imagediff = imgOriginal.difference(imgthreshold);
-        
+
         String pathCopy = imgOriginal.getPath().getParent().toString() + "/difference_"
                 + imgOriginal.getPath().getFileName().toString();
-        
+
         System.out.println("Writing image to " + pathCopy);
-        
+
         imagediff.writeToFile(pathCopy);
-        
+
         System.out.println("Done!");
     }
-    
 
 }
